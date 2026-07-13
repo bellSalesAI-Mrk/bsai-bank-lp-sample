@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地方銀行向け bellSalesAI｜面談記録、平均60分→20分以下に。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Manrope:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2B4C;
+    --navy-deep:#0A1F38;
+    --ink:#22394F;
+    --mist:#EDF3F8;
+    --paper:#FFFFFF;
+    --gold:#B9912F;
+    --gold-deep:#9A7623;
+    --blue:#2E6FA8;
+    --line:#D7E2EB;
+    --radius:10px;
+    --serif:"Shippori Mincho",serif;
+    --sans:"Noto Sans JP",sans-serif;
+    --num:"Manrope","Noto Sans JP",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.9;font-size:16px;}
+  img{max-width:100%;}
+  a{color:inherit;}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  .sec-label{font-family:var(--num);font-weight:800;font-size:12px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:14px;}
+  h2{font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.6vw,38px);line-height:1.5;color:var(--navy);margin-bottom:20px;letter-spacing:.02em;}
+  .lead{max-width:760px;color:#42566B;}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;}
+  .rv.on{opacity:1;transform:none;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .rv{opacity:1;transform:none;transition:none;}
+    .bar-after{transition:none !important;}
+  }
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .head-in{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:baseline;gap:10px;}
+  .brand .logo{font-family:var(--num);font-weight:800;font-size:20px;color:var(--navy);letter-spacing:-.01em;}
+  .brand .for{font-size:12px;font-weight:700;color:var(--gold-deep);border:1px solid var(--gold);border-radius:3px;padding:1px 8px;letter-spacing:.08em;}
+  .head-cta{display:flex;gap:10px;}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:6px;text-align:center;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;}
+  .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+  .btn-gold{background:linear-gradient(180deg,#C89F3F,var(--gold));color:#fff;padding:12px 26px;box-shadow:0 4px 14px rgba(185,145,47,.35);}
+  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(185,145,47,.4);}
+  .btn-ghost{border:1.5px solid var(--navy);color:var(--navy);padding:12px 26px;background:#fff;}
+  .btn-ghost:hover{background:var(--mist);}
+  .head-cta .btn{padding:9px 18px;font-size:14px;}
+  @media(max-width:640px){.head-cta .btn-ghost{display:none;}}
+
+  /* hero */
+  .hero{background:
+    radial-gradient(1100px 500px at 85% -10%, #1E4B7C 0%, transparent 60%),
+    linear-gradient(160deg,var(--navy-deep) 0%,var(--navy) 55%,#123458 100%);
+    color:#fff;padding:96px 0 0;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;padding-bottom:72px;}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+  .hero .eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.12em;color:#DCC98A;border:1px solid rgba(220,201,138,.5);border-radius:99px;padding:5px 16px;margin-bottom:26px;}
+  h1{font-family:var(--serif);font-weight:800;font-size:clamp(34px,5vw,54px);line-height:1.4;letter-spacing:.02em;margin-bottom:22px;}
+  h1 .gold{color:#E3C572;}
+  .hero-sub{color:#C7D6E4;font-size:15.5px;max-width:520px;margin-bottom:34px;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+  .hero-cta .btn{padding:16px 34px;font-size:16px;}
+  .hero-cta .btn-ghost{border-color:rgba(255,255,255,.7);color:#fff;background:transparent;}
+  .hero-cta .btn-ghost:hover{background:rgba(255,255,255,.08);}
+  .hero-note{font-size:12px;color:#8FA6BC;}
+
+  /* signature: time bars */
+  .timecard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:34px 30px;backdrop-filter:blur(4px);}
+  .timecard .tc-title{font-size:13px;font-weight:700;letter-spacing:.14em;color:#AFC3D6;margin-bottom:24px;}
+  .bar-row{margin-bottom:26px;}
+  .bar-row .bar-label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:#C7D6E4;margin-bottom:8px;}
+  .bar-label b{font-family:var(--num);font-size:26px;color:#fff;}
+  .bar-label b.gold{color:#E3C572;font-size:34px;}
+  .bar{height:14px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:99px;}
+  .bar-before i{width:100%;background:linear-gradient(90deg,#5E7B96,#7E97AE);}
+  .bar-after i{width:0;background:linear-gradient(90deg,#D9B75B,#B9912F);transition:width 1.4s cubic-bezier(.2,.7,.2,1) .4s;}
+  .bar-after.on i{width:33%;}
+  .tc-src{font-size:11px;color:#7E96AC;margin-top:4px;}
+
+  /* logo bar */
+  .logobar{background:var(--navy-deep);border-top:1px solid rgba(255,255,255,.08);padding:26px 0;}
+  .logobar .wrap{display:flex;align-items:center;gap:36px;flex-wrap:wrap;justify-content:center;}
+  .logobar .lb-label{font-size:12px;color:#8FA6BC;letter-spacing:.16em;font-weight:700;}
+  .banklogo{font-family:var(--serif);font-weight:700;font-size:19px;color:#E8EFF5;letter-spacing:.12em;opacity:.92;}
+  .logobar .lb-note{font-size:11px;color:#64809A;width:100%;text-align:center;}
+
+  /* problems */
+  .sec-mist{background:var(--mist);}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+  @media(max-width:860px){.cards3{grid-template-columns:1fr;}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;}
+  .card .c-icon{width:46px;height:46px;border-radius:8px;background:var(--navy);color:#E3C572;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:22px;font-weight:700;margin-bottom:18px;}
+  .card h3{font-size:18px;color:var(--navy);margin-bottom:12px;line-height:1.6;}
+  .card p{font-size:14.5px;color:#4A5E72;}
+
+  /* solution steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:48px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  @media(max-width:860px){.steps{grid-template-columns:1fr;}}
+  .step{padding:36px 30px;background:#fff;position:relative;}
+  .step + .step{border-left:1px solid var(--line);}
+  @media(max-width:860px){.step + .step{border-left:none;border-top:1px solid var(--line);}}
+  .step .s-no{font-family:var(--num);font-weight:800;font-size:13px;color:var(--gold);letter-spacing:.2em;margin-bottom:10px;}
+  .step h3{font-size:18px;color:var(--navy);margin-bottom:10px;}
+  .step p{font-size:14.5px;color:#4A5E72;}
+  .sol-note{margin-top:26px;background:var(--mist);border-left:4px solid var(--gold);padding:18px 24px;font-size:14.5px;color:#3D5266;border-radius:0 8px 8px 0;}
+
+  /* effects */
+  .fx-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+  @media(max-width:860px){.fx-cards{grid-template-columns:1fr;}}
+  .fx{background:linear-gradient(180deg,#fff, #FAFCFE);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:var(--radius);padding:32px 28px;}
+  .fx .fx-num{font-family:var(--num);font-weight:800;font-size:clamp(30px,3vw,38px);color:var(--navy);line-height:1.2;margin:6px 0 4px;}
+  .fx .fx-num small{font-size:.45em;font-weight:700;color:#5E7386;}
+  .fx h3{font-size:15px;color:var(--gold-deep);letter-spacing:.08em;font-weight:700;}
+  .fx p{font-size:14px;color:#4A5E72;margin-top:12px;}
+  .fx .src{display:block;font-size:11.5px;color:#7A8DA0;margin-top:14px;}
+  .fx-close{margin-top:40px;text-align:center;font-family:var(--serif);font-size:clamp(18px,2.4vw,23px);color:var(--navy);font-weight:700;line-height:2;}
+
+  /* voice / hr block */
+  .voice{background:var(--navy);color:#fff;}
+  .voice h2{color:#fff;}
+  .voice .lead{color:#B9CBDC;}
+  .quote{margin-top:44px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:38px 40px;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;}
+  @media(max-width:700px){.quote{grid-template-columns:1fr;padding:28px;}}
+  .quote .qmark{font-family:var(--serif);font-size:64px;color:#E3C572;line-height:.8;}
+  .quote p{font-family:var(--serif);font-size:17px;line-height:2.1;color:#EAF1F7;}
+  .quote .who{margin-top:16px;font-family:var(--sans);font-size:13px;color:#9FB4C8;}
+
+  /* poc compare */
+  .poc-badge{display:inline-flex;align-items:center;gap:10px;background:var(--mist);border:1px solid var(--line);border-radius:99px;padding:8px 20px;font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:22px;}
+  .poc-badge b{font-family:var(--num);color:var(--gold-deep);font-size:16px;}
+  .mid-cta{margin-top:44px;background:var(--navy);border-radius:14px;padding:34px 38px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .mid-cta p{color:#DCE7F0;font-size:15px;font-weight:500;}
+  .mid-cta p b{color:#E3C572;}
+
+  /* compliance */
+  .comp{background:linear-gradient(180deg,var(--navy-deep),var(--navy));color:#fff;}
+  .comp h2{color:#fff;}
+  .comp .lead{color:#B9CBDC;}
+  .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px;}
+  @media(max-width:760px){.checks{grid-template-columns:1fr;}}
+  .check{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:24px 26px;display:flex;gap:16px;}
+  .check .ck{flex:none;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:3px;}
+  .check h3{font-size:16px;margin-bottom:6px;color:#fff;}
+  .check p{font-size:13.5px;color:#B9CBDC;}
+
+  /* timeline */
+  .tl{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  @media(max-width:860px){.tl{grid-template-columns:1fr;}}
+  .tl::before{content:"";position:absolute;top:23px;left:4%;right:4%;height:2px;background:var(--line);}
+  @media(max-width:860px){.tl::before{display:none;}}
+  .tl-step{position:relative;padding:0 18px;}
+  @media(max-width:860px){.tl-step{padding:0 0 30px 0;}}
+  .tl-step .dot{width:46px;height:46px;border-radius:50%;background:#fff;border:3px solid var(--navy);color:var(--navy);font-family:var(--num);font-weight:800;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;margin-bottom:16px;}
+  .tl-step h3{font-size:16.5px;color:var(--navy);margin-bottom:6px;}
+  .tl-step .dur{font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.06em;display:block;margin-bottom:8px;}
+  .tl-step p{font-size:13.5px;color:#4A5E72;}
+
+  /* roadmap */
+  .road{counter-reset:rd;margin-top:44px;display:grid;gap:14px;}
+  .rd{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px 28px 24px 84px;position:relative;}
+  .rd::before{counter-increment:rd;content:"第" counter(rd) "段階";position:absolute;left:20px;top:24px;writing-mode:vertical-rl;font-family:var(--serif);font-weight:700;font-size:13px;color:var(--gold-deep);letter-spacing:.2em;}
+  .rd h3{font-size:16.5px;color:var(--navy);margin-bottom:4px;}
+  .rd p{font-size:14px;color:#4A5E72;}
+  .road-close{margin-top:40px;background:var(--mist);border-radius:12px;padding:34px 36px;text-align:center;}
+  .road-close p{font-family:var(--serif);font-size:clamp(17px,2.2vw,21px);color:var(--navy);font-weight:700;line-height:2.1;}
+
+  /* faq */
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;margin-bottom:12px;overflow:hidden;}
+  summary{cursor:pointer;padding:20px 24px;font-weight:700;color:var(--navy);font-size:15.5px;list-style:none;display:flex;gap:14px;align-items:baseline;}
+  summary::-webkit-details-marker{display:none;}
+  summary::before{content:"Q";font-family:var(--num);font-weight:800;color:var(--gold);}
+  summary::after{content:"＋";margin-left:auto;color:#9AAABB;font-weight:400;}
+  details[open] summary::after{content:"−";}
+  details .a{padding:0 24px 22px 52px;font-size:14.5px;color:#4A5E72;}
+  summary:focus-visible{outline:3px solid var(--blue);outline-offset:-3px;}
+
+  /* closing cta */
+  .close-cta{background:
+    radial-gradient(900px 400px at 15% 110%, #1E4B7C 0%, transparent 60%),
+    linear-gradient(200deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:#fff;text-align:center;}
+  .close-cta h2{color:#fff;}
+  .close-cta .lead{margin:0 auto 40px;color:#C7D6E4;}
+  .doc-mock{display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:16px 26px;margin-bottom:36px;font-size:14px;color:#DCE7F0;}
+  .doc-mock .d-ico{font-family:var(--serif);background:#fff;color:var(--navy);border-radius:6px;width:40px;height:48px;display:flex;align-items:center;justify-content:center;font-weight:800;}
+  .close-cta .hero-cta{justify-content:center;}
+
+  footer{background:var(--navy-deep);color:#7E96AC;font-size:12.5px;padding:34px 0;}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  footer a{color:#A9BCCC;text-decoration:none;margin-left:20px;}
+  footer a:hover{text-decoration:underline;}
+
+  .sample-band{background:#7A1F1F;color:#fff;text-align:center;font-size:12px;font-weight:700;letter-spacing:.14em;padding:7px;}
+</style>
+</head>
+<body>
+
+<div class="sample-band">SAMPLE — 社内検討用モック(数値・行名の掲載は各行の許諾確認前です)</div>
+
+<header>
+  <div class="wrap head-in">
+    <div class="brand">
+      <span class="logo">bellSalesAI</span>
+      <span class="for">地方銀行向け</span>
+    </div>
+    <nav class="head-cta">
+      <a class="btn btn-ghost" href="#contact">オンラインで相談</a>
+      <a class="btn btn-gold" href="#contact">事例集をダウンロード</a>
+    </nav>
+  </div>
+</header>
+
+<!-- SEC-01 FV -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">金融商品取引法に基づく面談記録を、AIが自動作成</span>
+      <h1>面談記録、<br>平均60分 → <span class="gold">20分以下</span>に。</h1>
+      <p class="hero-sub">録音から要約・CRM入力まで、渉外担当の記録業務をゼロに近づける。Salesforce入力エージェント「bellSalesAI」は、地方銀行のリテール・法人渉外の現場で導入が広がっています。</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="#contact">地銀向け導入事例集をダウンロード</a>
+        <a class="btn btn-ghost" href="#contact">オンラインで相談する</a>
+      </div>
+      <p class="hero-note">※事例集は無料。行内検討資料としてそのままご利用いただけます</p>
+    </div>
+    <div class="timecard rv">
+      <p class="tc-title">面談記録1件あたりの作成時間</p>
+      <div class="bar-row">
+        <div class="bar-label"><span>導入前(手入力)</span><b>60<small>分</small></b></div>
+        <div class="bar bar-before"><i></i></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>bellSalesAI導入後</span><b class="gold">20分以下</b></div>
+        <div class="bar bar-after" id="barAfter"><i></i></div>
+      </div>
+      <p class="tc-src">出典:肥後銀行 試行導入時(2025年・預り資産面談)</p>
+    </div>
+  </div>
+  <div class="logobar">
+    <div class="wrap">
+      <span class="lb-label">導入地方銀行</span>
+      <span class="banklogo">池田泉州銀行</span>
+      <span class="banklogo">肥後銀行</span>
+      <span class="banklogo">三十三銀行</span>
+      <span class="lb-note">※ロゴ・行名の掲載は各行許諾のうえ差し替え予定(モックではテキスト表記)</span>
+    </div>
+  </div>
+</div>
+
+<!-- SEC-02 課題 -->
+<section class="sec-mist">
+  <div class="wrap">
+    <span class="sec-label rv">Issue</span>
+    <h2 class="rv">こんな課題、貴行にもありませんか?</h2>
+    <p class="lead rv">導入行の検討は、いずれもこの3つの構造的な負担から始まりました。</p>
+    <div class="cards3">
+      <div class="card rv">
+        <div class="c-icon">壱</div>
+        <h3>金商法対応の記録負荷</h3>
+        <p>金融商品の提案・約定にあたっては、法令に基づき交渉内容を詳細に記録する必要があります。面談後の記録作成とCRM登録が渉外担当の大きな負担となり、記録を充実させるほど時間がかかる——1件あたり30分以上を要するケースも珍しくありません。</p>
+      </div>
+      <div class="card rv">
+        <div class="c-icon">弐</div>
+        <h3>会話とメモのトレードオフ</h3>
+        <p>メモを取りながらの面談では、お客さまの会話への集中とメモの充実が両立しません。メモに気を取られた瞬間に、資金ニーズや家族構成の変化といった重要なキーワードを聞き逃すリスクが常にあります。</p>
+      </div>
+      <div class="card rv">
+        <div class="c-icon">参</div>
+        <h3>記録品質のばらつき</h3>
+        <p>帰店後の手入力では、職員によって記録の粒度・表現に差が生じます。誰が書いても一定水準の記録が残る「均質化」は、監査対応の面でも営業データ活用の面でも、多くの銀行で積み残しの課題です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-03 ソリューション -->
+<section>
+  <div class="wrap">
+    <span class="sec-label rv">Solution</span>
+    <h2 class="rv">面談を録音するだけ。<br>記録作成からCRM入力までAIが自動化</h2>
+    <p class="lead rv">bellSalesAIは、営業担当者の商談情報をAIが自動で抽出・構造化し、Salesforceへの入力を効率化する「Salesforce入力エージェント」です。渉外担当の操作は、訪問先でアプリを起動するだけです。</p>
+    <div class="steps">
+      <div class="step rv">
+        <div class="s-no">STEP 01</div>
+        <h3>訪問先でアプリを起動</h3>
+        <p>対面はスマホ、店頭・Web面談はPCアプリ。操作は起動のみ。メモから解放され、お客さまとの対話に集中できます。</p>
+      </div>
+      <div class="step rv">
+        <div class="s-no">STEP 02</div>
+        <h3>AIが記録を自動生成</h3>
+        <p>面談終了後、AIが文字起こし・要約・項目抽出を実行。お客さまの発言も抽出され、面談の記憶が鮮明によみがえります。</p>
+      </div>
+      <div class="step rv">
+        <div class="s-no">STEP 03</div>
+        <h3>CRMへ連携</h3>
+        <p>構造化されたデータとしてSalesforceへ。統一フォーマットでの出力が、記録品質の標準化につながります。</p>
+      </div>
+    </div>
+    <p class="sol-note rv"><b>地銀向けの設計:</b>貴行の面談記録フォーマットに合わせた抽出項目の設計が可能です。預り資産(投信・保険)の面談だけでなく、法人渉外の面談や本部の会議議事録へと活用が広がった導入行もあります。</p>
+  </div>
+</section>
+
+<!-- SEC-04 効果 -->
+<section class="sec-mist">
+  <div class="wrap">
+    <span class="sec-label rv">Results</span>
+    <h2 class="rv">導入行で実証された、3つの効果</h2>
+    <div class="fx-cards">
+      <div class="fx rv">
+        <h3>記録作成時間の削減</h3>
+        <div class="fx-num">60分 → 20分<small>以下</small></div>
+        <p>試行導入にて、面談記録の作成時間を大幅短縮。別の導入行でも、営業店で1件あたり平均10〜30分(手入力比30〜60%減)、本部では最大60分以上の削減を達成した職員もいます。</p>
+        <span class="src">出典:肥後銀行/三十三銀行 プレスリリース</span>
+      </div>
+      <div class="fx rv">
+        <h3>記録品質の標準化</h3>
+        <div class="fx-num">統一フォーマット<small>で出力</small></div>
+        <p>従来は職員により表記がばらついていた記録が、構造化された統一フォーマットで出力されるように。組織全体の記録品質の底上げにつながっています。</p>
+        <span class="src">出典:肥後銀行 プレスリリース</span>
+      </div>
+      <div class="fx rv">
+        <h3>顧客応対品質の向上</h3>
+        <div class="fx-num">会話に集中<small>できる面談へ</small></div>
+        <p>「記録はアプリに任せ、お客さまとの会話に集中できた」「お客さまの発言も抽出され、面談時の記憶が鮮明に甦る」——営業店職員からの声が寄せられています。</p>
+        <span class="src">出典:三十三銀行 PoCアンケート</span>
+      </div>
+    </div>
+    <p class="fx-close rv">削減できた時間は、次の面談に向けた提案準備へ。<br>記録業務の削減は、提案力の向上に直結します。</p>
+  </div>
+</section>
+
+<!-- SEC-05 人材 -->
+<section class="voice">
+  <div class="wrap">
+    <span class="sec-label rv">People</span>
+    <h2 class="rv">ベテランと若手の「聞き取る力」の差を、AIが埋める</h2>
+    <p class="lead rv">お客さまの発言から重要なキーワードを拾い上げる力には、経験の差が出ます。bellSalesAIは行員の経験の多寡にかかわらず重要な発言を漏らさず記録し、上席の具体的な指導と、本人の客観的な振り返りを可能にします。記録の自動化は、若手渉外の育成インフラでもあります。</p>
+    <div class="quote rv">
+      <div class="qmark">“</div>
+      <div>
+        <p>顧客が発する重要なキーワードを、行員の経験の多寡にかかわらず効率よく拾い上げられる。銀行全体として、営業生産性の向上と提案力の向上を同時に実現できると期待しています。</p>
+        <p class="who">三十三銀行 DX戦略部(導入発表プレスリリースより)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-06 比較PoC -->
+<section>
+  <div class="wrap">
+    <span class="sec-label rv">Why bellSalesAI</span>
+    <h2 class="rv">3製品の比較検証で、選ばれました</h2>
+    <div class="poc-badge rv">導入行のPoC:<b>3製品 × 各1か月</b>の比較検証を実施</div>
+    <p class="lead rv">三十三銀行では、録音感度・要約精度・操作性・サポート体制を定量・定性の両面で評価。bellSalesAIが総合的に最も高い評価を獲得し、正式導入に至りました。評価されたのは次の3点です。</p>
+    <div class="cards3">
+      <div class="card rv">
+        <div class="c-icon">精</div>
+        <h3>要約精度とスピード</h3>
+        <p>離れた距離でも高感度に録音し、必要な情報を的確に抽出。要約完了までのスピードも、PoC実施製品の中で最速との評価を得ました。</p>
+      </div>
+      <div class="card rv">
+        <div class="c-icon">現</div>
+        <h3>現場の職員からの評価</h3>
+        <p>スマホアプリの直感的な操作性により、PoC店舗の職員からの定性評価が特に高く、利用頻度の定量評価でも優位。「現場が使い続けるか」が定着の分かれ目です。</p>
+      </div>
+      <div class="card rv">
+        <div class="c-icon">支</div>
+        <h3>銀行導入に慣れたサポート</h3>
+        <p>導入マニュアルの事前整備で行内の確認・説明工数を大幅に削減。他行への導入知見を活かした迅速で丁寧なフォローも、明確な差として評価されました。</p>
+      </div>
+    </div>
+    <div class="mid-cta rv">
+      <p><b>比較検討中の方へ:</b>PoCの設計方法・評価項目リストも事例集に収録しています。</p>
+      <a class="btn btn-gold" href="#contact">地銀向け導入事例集をダウンロード</a>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-07 コンプラ -->
+<section class="comp">
+  <div class="wrap">
+    <span class="sec-label rv">Governance</span>
+    <h2 class="rv">「AIに任せて大丈夫か」への、私たちの答え</h2>
+    <p class="lead rv">金商法等に基づく面談記録には、正確性・網羅性・保存性が求められます。bellSalesAIは記録の「品質」と「業務効率」の両立を前提に設計されており、導入行では効率化とコンプライアンス強化を同時の目的として採用されています。担当者の記憶や主観に頼らない客観的な記録が残ること自体が、ガバナンスの強化です。</p>
+    <div class="checks">
+      <div class="check rv"><div class="ck">✓</div><div><h3>最終確認は行員が実施</h3><p>AIの出力を行員が確認・確定する運用を前提とした設計。AI任せにしない業務フローを構築できます。</p></div></div>
+      <div class="check rv"><div class="ck">✓</div><div><h3>行内ポリシーへの準拠</h3><p>同意取得・保存期間・アクセス権管理など、貴行の運用基準に沿った設計が可能です。</p></div></div>
+      <div class="check rv"><div class="ck">✓</div><div><h3>セキュリティ機能</h3><p>シングルサインオン(SSO)、個人情報のマスキング、各種権限管理機能を提供します。</p></div></div>
+      <div class="check rv"><div class="ck">✓</div><div><h3>行内システム審査に対応</h3><p>セキュリティチェックシートなど、行内審査・稟議に必要な資料をご提供します。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-08 進め方 -->
+<section>
+  <div class="wrap">
+    <span class="sec-label rv">Process</span>
+    <h2 class="rv">導入モデルケース:一部店舗でのPoCから、全店展開へ</h2>
+    <p class="lead rv">導入行では「共同検討の開始から短期間で全店運用」まで進んだ例もあります。他行の知見をもとにした標準的な進め方をご提案します。</p>
+    <div class="tl">
+      <div class="tl-step rv"><div class="dot">1</div><h3>要件整理・PoC設計</h3><span class="dur">〜1か月</span><p>対象業務(例:預り資産面談)と評価項目を設計。他行のPoC設計知見をご提供します。</p></div>
+      <div class="tl-step rv"><div class="dot">2</div><h3>一部店舗でのPoC</h3><span class="dur">1〜3か月</span><p>削減時間・要約精度・現場評価を、定量・定性の両面で検証します。</p></div>
+      <div class="tl-step rv"><div class="dot">3</div><h3>評価・稟議</h3><span class="dur">検証後</span><p>PoC結果レポートを、そのまま稟議資料としてご活用いただけます。</p></div>
+      <div class="tl-step rv"><div class="dot">4</div><h3>全店展開・定着支援</h3><span class="dur">展開期</span><p>導入マニュアル整備、行内説明会の支援、利用状況のモニタリングまで伴走します。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-09 ロードマップ -->
+<section class="sec-mist">
+  <div class="wrap">
+    <span class="sec-label rv">Roadmap</span>
+    <h2 class="rv">面談記録は、DX戦略の起点になる</h2>
+    <p class="lead rv">bellSalesAIの価値は、記録工数の削減にとどまりません。CRMに高品質な面談データが蓄積されること自体が、データドリブンな営業組織への転換の土台になります。導入行では、次のような段階的な活用拡大が計画・実践されています。</p>
+    <div class="road">
+      <div class="rd rv"><h3>預り資産面談の記録自動化</h3><p>まずは記録負荷の最も重い領域から。投信・保険面談の記録をAIに任せます。</p></div>
+      <div class="rd rv"><h3>法人渉外・融資面談への拡大</h3><p>実際に、想定を超えて法人渉外や本部会議の議事録へ利用が広がった導入行もあります。</p></div>
+      <div class="rd rv"><h3>AIコンプライアンスチェック</h3><p>蓄積した面談データとシステム連携した、モニタリング体制の構築へ。</p></div>
+      <div class="rd rv"><h3>AIエージェントによる業務自動化・営業改善</h3><p>対話データをもとにした、お客さまごとのネクストアクション提案へ。</p></div>
+    </div>
+    <div class="road-close rv">
+      <p>「営業・業務生産性の向上」「DXによる営業スタイルの変革」——<br>貴行の中期経営計画のその一行を、面談記録の自動化から始めませんか。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-10 FAQ -->
+<section>
+  <div class="wrap">
+    <span class="sec-label rv">FAQ</span>
+    <h2 class="rv">よくあるご質問</h2>
+    <div style="margin-top:36px;">
+      <details class="rv"><summary>録音について、お客さまの同意はどう取得しますか?</summary><div class="a">導入行の運用基準に沿った同意取得フローを設計します。導入行での運用例をご紹介可能です。</div></details>
+      <details class="rv"><summary>Salesforce以外のCRMでも使えますか?</summary><div class="a">Salesforceへの入力に特化した設計です。他CRMをご利用の場合は、個別にご相談ください。</div></details>
+      <details class="rv"><summary>方言や金融の専門用語の認識精度は問題ありませんか?</summary><div class="a">PoCにて、貴行の実環境・実際の面談条件でご確認いただけます。三重・愛知、熊本、大阪の銀行での運用実績があります。</div></details>
+      <details class="rv"><summary>検討にあたり、行内説明用の資料はもらえますか?</summary><div class="a">稟議・行内説明にそのままお使いいただける資料一式をご用意しています。まずは事例集をダウンロードのうえ、お気軽にご相談ください。</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- SEC-11 CTA -->
+<section class="close-cta" id="contact">
+  <div class="wrap">
+    <span class="sec-label rv">Download</span>
+    <h2 class="rv">まずは、地銀3行の事例から。</h2>
+    <p class="lead rv">3行の導入背景、PoCの進め方、定量効果をまとめた「地方銀行向け導入事例集」をご用意しました。行内での検討・共有資料としてもご活用ください。</p>
+    <div class="doc-mock rv">
+      <div class="d-ico">冊</div>
+      <div style="text-align:left;">
+        <b>地方銀行向け導入事例集(PDF)</b><br>
+        導入3行の背景・PoC設計・効果データを収録
+      </div>
+    </div>
+    <div class="hero-cta rv">
+      <a class="btn btn-gold" href="#">事例集をダウンロード(無料)</a>
+      <a class="btn btn-ghost" href="#">オンライン個別相談を予約する</a>
+    </div>
+    <p class="hero-note rv" style="margin-top:16px;">「他行はPoCをどう設計したか」からご相談いただけます</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© bellFace, Inc.(サンプルLP/社内検討用モック)</div>
+    <div>
+      <a href="#">情報セキュリティ基本方針</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">運営会社</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal + time bar animation
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('on');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('.rv,.bar-after').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
